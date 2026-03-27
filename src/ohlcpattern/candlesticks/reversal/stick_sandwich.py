@@ -1,4 +1,4 @@
-from stock_price_patterns import WHITE_CS, BLACK_CS
+from ... import BLACK_CS, WHITE_CS
 
 
 def is_bearish_stick_sandwich(htd):
@@ -10,9 +10,7 @@ def is_bearish_stick_sandwich(htd):
     _1st_condition = bearish_stick_sandwich_cond_1(max_oc)
     _2nd_condition = bearish_stick_sandwich_cond_2(min_oc)
     _3rd_condition = bearish_stick_sandwich_cond_3(color)
-    if _1st_condition and _2nd_condition and _3rd_condition:
-        return True
-    return False
+    return bool(_1st_condition and _2nd_condition and _3rd_condition)
 # --------------
 
 
@@ -25,9 +23,7 @@ def is_bullish_stick_sandwich(htd):
     _1st_condition = bullish_stick_sandwich_cond_1(max_oc)
     _2nd_condition = bullish_stick_sandwich_cond_2(min_oc)
     _3rd_condition = bullish_stick_sandwich_cond_3(color)
-    if _1st_condition and _2nd_condition and _3rd_condition:
-        return True
-    return False
+    return bool(_1st_condition and _2nd_condition and _3rd_condition)
 
 
 # -----------------------------------------------Conditions------------------------------------------------------------
@@ -40,10 +36,7 @@ def bullish_stick_sandwich_cond_1(max_oc):
     :param max_oc:
     :return:
     """
-    if max_oc[-3] > max_oc[-2] and max_oc[-1] > max_oc[-2] and abs(max_oc[-3] - max_oc[-1]) < 0.2:
-        return True
-    else:
-        return False
+    return bool(max_oc[-3] > max_oc[-2] and max_oc[-1] > max_oc[-2] and abs(max_oc[-3] - max_oc[-1]) < 0.2)
 
 
 def bullish_stick_sandwich_cond_2(min_oc):
@@ -55,10 +48,7 @@ def bullish_stick_sandwich_cond_2(min_oc):
     :param min_oc:
     :return:
     """
-    if min_oc[-3] < min_oc[-2] and min_oc[-1] < min_oc[-2] and abs(min_oc[-3] - min_oc[-1]) < 0.2:
-        return True
-    else:
-        return False
+    return bool(min_oc[-3] < min_oc[-2] and min_oc[-1] < min_oc[-2] and abs(min_oc[-3] - min_oc[-1]) < 0.2)
 
 
 def bullish_stick_sandwich_cond_3(color):
@@ -70,10 +60,7 @@ def bullish_stick_sandwich_cond_3(color):
     :param color:
     :return:
     """
-    if color[-1] == BLACK_CS and color[-2] == WHITE_CS and color[-3] == BLACK_CS:
-        return True
-    else:
-        return False
+    return bool(color[-1] == BLACK_CS and color[-2] == WHITE_CS and color[-3] == BLACK_CS)
 
 
 # --------------
@@ -86,10 +73,7 @@ def bearish_stick_sandwich_cond_1(max_oc):
     :param max_oc:
     :return:
     """
-    if max_oc[-3] > max_oc[-2] and max_oc[-1] > max_oc[-2] and abs(max_oc[-3] - max_oc[-1]) < 0.2:
-        return True
-    else:
-        return False
+    return bool(max_oc[-3] > max_oc[-2] and max_oc[-1] > max_oc[-2] and abs(max_oc[-3] - max_oc[-1]) < 0.2)
 
 
 def bearish_stick_sandwich_cond_2(min_oc):
@@ -101,10 +85,7 @@ def bearish_stick_sandwich_cond_2(min_oc):
     :param min_oc:
     :return:
     """
-    if min_oc[-3] < min_oc[-2] and min_oc[-1] < min_oc[-2] and abs(min_oc[-3] - min_oc[-1]) < 0.2:
-        return True
-    else:
-        return False
+    return bool(min_oc[-3] < min_oc[-2] and min_oc[-1] < min_oc[-2] and abs(min_oc[-3] - min_oc[-1]) < 0.2)
 
 
 def bearish_stick_sandwich_cond_3(color):
@@ -116,7 +97,4 @@ def bearish_stick_sandwich_cond_3(color):
     :param color:
     :return:
     """
-    if color[-1] == WHITE_CS and color[-2] == BLACK_CS and color[-3] == WHITE_CS:
-        return True
-    else:
-        return False
+    return bool(color[-1] == WHITE_CS and color[-2] == BLACK_CS and color[-3] == WHITE_CS)

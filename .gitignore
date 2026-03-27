@@ -1,6 +1,31 @@
+# IDEs
 .idea
-venv
+.vscode/
+
+# Environments
+venv/
+.env
+.venv/
+env/
+build/
+dist/
+*.egg-info/
+
+# Jupyter
 .ipynb_checkpoints
 *.html
-.env
-**/__pycache__/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Testing
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log

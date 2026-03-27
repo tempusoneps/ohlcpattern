@@ -1,4 +1,4 @@
-from stock_price_patterns import WHITE_CS, BLACK_CS
+from ... import BLACK_CS, WHITE_CS
 
 
 def is_falling_n(htd):
@@ -12,9 +12,7 @@ def is_falling_n(htd):
     _3rd_condition = n_model_cond_3(max_oc)
     min_oc = htd['min_OC'].to_list()
     _4th_condition = n_model_cond_4(min_oc)
-    if _1st_condition and _2nd_condition and _3rd_condition and _4th_condition:
-        return True
-    return False
+    return bool(_1st_condition and _2nd_condition and _3rd_condition and _4th_condition)
 
 
 def is_rising_n(htd):
@@ -28,9 +26,7 @@ def is_rising_n(htd):
     _3rd_condition = n_model_cond_3(max_oc)
     min_oc = htd['min_OC'].to_list()
     _4th_condition = n_model_cond_4(min_oc)
-    if _1st_condition and _2nd_condition and _3rd_condition and _4th_condition:
-        return True
-    return False
+    return bool(_1st_condition and _2nd_condition and _3rd_condition and _4th_condition)
 # -----------------------------------------------Conditions------------------------------------------------------------
 
 
@@ -43,10 +39,7 @@ def falling_n_cond_1(color):
     :param color:
     :return:
     """
-    if color[-1] == BLACK_CS and color[-4] == BLACK_CS:
-        return True
-    else:
-        return False
+    return bool(color[-1] == BLACK_CS and color[-4] == BLACK_CS)
 
 
 def n_model_cond_2(body):
@@ -60,10 +53,7 @@ def n_model_cond_2(body):
     :param body:
     :return:
     """
-    if body[-1] > 3 * body[-2] and body[-1] > 3 * body[-3] and body[-4] > 3 * body[-2] and body[-4] > 3 * body[-3]:
-        return True
-    else:
-        return False
+    return bool(body[-1] > 3 * body[-2] and body[-1] > 3 * body[-3] and body[-4] > 3 * body[-2] and body[-4] > 3 * body[-3])
 
 
 def n_model_cond_3(max_oc):
@@ -75,10 +65,7 @@ def n_model_cond_3(max_oc):
     :param max_oc:
     :return:
     """
-    if max_oc[-4] > max_oc[-3] and max_oc[-4] > max_oc[-2]:
-        return True
-    else:
-        return False
+    return bool(max_oc[-4] > max_oc[-3] and max_oc[-4] > max_oc[-2])
 
 
 def n_model_cond_4(min_oc):
@@ -90,10 +77,7 @@ def n_model_cond_4(min_oc):
     :param min_oc:
     :return:
     """
-    if min_oc[-4] < min_oc[-3] and min_oc[-4] < min_oc[-2]:
-        return True
-    else:
-        return False
+    return bool(min_oc[-4] < min_oc[-3] and min_oc[-4] < min_oc[-2])
 # --------------
 
 
@@ -106,7 +90,4 @@ def rising_n_cond_1(color):
     :param color:
     :return:
     """
-    if color[-1] == WHITE_CS and color[-4] == WHITE_CS:
-        return True
-    else:
-        return False
+    return bool(color[-1] == WHITE_CS and color[-4] == WHITE_CS)

@@ -1,4 +1,4 @@
-from stock_price_patterns import WHITE_CS, BLACK_CS
+from ... import BLACK_CS, WHITE_CS
 
 
 def is_falling_three(htd):
@@ -12,9 +12,7 @@ def is_falling_three(htd):
     _3rd_condition = falling_three_cond_3(max_oc)
     min_oc = htd['min_OC'].to_list()
     _4th_condition = falling_three_cond_4(min_oc)
-    if _1st_condition and _2nd_condition and _3rd_condition and _4th_condition:
-        return True
-    return False
+    return bool(_1st_condition and _2nd_condition and _3rd_condition and _4th_condition)
 
 
 def is_rising_three(htd):
@@ -28,9 +26,7 @@ def is_rising_three(htd):
     _3rd_condition = rising_three_cond_3(max_oc)
     min_oc = htd['min_OC'].to_list()
     _4th_condition = rising_three_cond_4(min_oc)
-    if _1st_condition and _2nd_condition and _3rd_condition and _4th_condition:
-        return True
-    return False
+    return bool(_1st_condition and _2nd_condition and _3rd_condition and _4th_condition)
 # -----------------------------------------------Conditions------------------------------------------------------------
 
 
@@ -41,10 +37,7 @@ def falling_three_cond_1(color):
     :param color:
     :return:
     """
-    if color[-1] == BLACK_CS:
-        return True
-    else:
-        return False
+    return color[-1] == BLACK_CS
 
 
 def falling_three_cond_2(body):
@@ -57,10 +50,7 @@ def falling_three_cond_2(body):
     :param body:
     :return:
     """
-    if body[-1] > 3 * body[-4] and body[-1] > 3 * body[-3] and body[-1] > 3 * body[-2]:
-        return True
-    else:
-        return False
+    return bool(body[-1] > 3 * body[-4] and body[-1] > 3 * body[-3] and body[-1] > 3 * body[-2])
 
 
 def falling_three_cond_3(max_oc):
@@ -71,10 +61,7 @@ def falling_three_cond_3(max_oc):
     :param max_oc:
     :return:
     """
-    if max_oc[-4] < max_oc[-3] < max_oc[-2]:
-        return True
-    else:
-        return False
+    return max_oc[-4] < max_oc[-3] < max_oc[-2]
 
 
 def falling_three_cond_4(min_oc):
@@ -84,10 +71,7 @@ def falling_three_cond_4(min_oc):
     :param min_oc:
     :return:
     """
-    if min_oc[-4] > min_oc[-1]:
-        return True
-    else:
-        return False
+    return min_oc[-4] > min_oc[-1]
 
 
 # --------------
@@ -98,10 +82,7 @@ def rising_three_cond_1(color):
     :param color:
     :return:
     """
-    if color[-1] == WHITE_CS:
-        return True
-    else:
-        return False
+    return color[-1] == WHITE_CS
 
 
 def rising_three_cond_2(body):
@@ -114,10 +95,7 @@ def rising_three_cond_2(body):
     :param body:
     :return:
     """
-    if body[-1] > 3 * body[-4] and body[-1] > 3 * body[-3] and body[-1] > 3 * body[-2]:
-        return True
-    else:
-        return False
+    return bool(body[-1] > 3 * body[-4] and body[-1] > 3 * body[-3] and body[-1] > 3 * body[-2])
 
 
 def rising_three_cond_3(max_oc):
@@ -127,10 +105,7 @@ def rising_three_cond_3(max_oc):
         :param max_oc:
         :return:
         """
-    if max_oc[-4] < max_oc[-1]:
-        return True
-    else:
-        return False
+    return max_oc[-4] < max_oc[-1]
 
 
 def rising_three_cond_4(min_oc):
@@ -141,7 +116,4 @@ def rising_three_cond_4(min_oc):
         :param min_oc:
         :return:
         """
-    if min_oc[-4] > min_oc[-3] > min_oc[-2]:
-        return True
-    else:
-        return False
+    return min_oc[-4] > min_oc[-3] > min_oc[-2]

@@ -1,4 +1,4 @@
-from stock_price_patterns.candlesticks import *
+from .. import *
 
 
 class BearishDoubleCandlestick:
@@ -113,7 +113,7 @@ class BearishDoubleCandlestick:
         Conditions:
             1. current_high == prev_bar_high
         """
-        if not (self._current_bar['High'] == self._prev_bar['High']):
+        if self._current_bar['High'] != self._prev_bar['High']:
             return False
         self.tweezers_top = True
         self.bearish_double_candlesticks = True
@@ -182,7 +182,7 @@ class BearishDoubleCandlestick:
         return True
 
     def __validate_bearish_harami_cross_pattern(self):
-        if not self._current_bar['color'] == DOJI_CS:
+        if self._current_bar['color'] != DOJI_CS:
             return False
         self.bearish_harami_cross = True
         self.bearish_double_candlesticks = True
