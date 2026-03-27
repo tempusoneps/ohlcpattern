@@ -14,6 +14,7 @@ authors = [
 ]
 dependencies = [
     "pandas>=1.0.0",
+    "typer[all]>=0.9.0",
 ]
 
 [project.optional-dependencies]
@@ -25,6 +26,9 @@ dev = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/ohlcpattern"]
+
+[project.scripts]
+ohlcpattern = "ohlcpattern.cli:app"
 
 [tool.ruff]
 line-length = 100
