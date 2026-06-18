@@ -1,29 +1,65 @@
-from .candlesticks.continuation.gap import is_bullish_gap, is_bearish_gap
-from .candlesticks.continuation.neck import is_bullish_neck, is_bearish_neck
-from .candlesticks.continuation.fair_value_gap import is_fair_value_rising_gap, is_fair_value_falling_gap
-from .candlesticks.continuation.three_methods import is_rising_three, is_falling_three
-from .candlesticks.continuation.separating_line import is_bullish_separating_line, is_bearish_separating_line
-from .candlesticks.continuation.four_bars_made_n import is_rising_n, is_falling_n
+from typing import List
+
+import pandas as pd
+
+from .candlesticks import *
+from .candlesticks import (
+    ALLOWED_PATTERNS,
+    BEARISH_GAP,
+    BEARISH_NECK,
+    BEARISH_SEPARATING_LINE,
+    BLACK_CS,
+    BULLISH_GAP,
+    BULLISH_NECK,
+    BULLISH_SEPARATING_LINE,
+    DOJI_CS,
+    FAIR_VALUE_FALLING_GAP,
+    FAIR_VALUE_RISING_GAP,
+    FALLING_N,
+    FALLING_THREE,
+    GET_CONTINUE,
+    GET_FULL,
+    GET_REVERSAL,
+    HAMMER_CS,
+    HANGING_MAN_CS,
+    INVERTED_HAMMER_CS,
+    MARUBOZU_CS,
+    RISING_N,
+    RISING_THREE,
+    SHOOTING_STAR_CS,
+    SPINNING_TOP_CS,
+    WHITE_CS,
+)
+from .candlesticks.continuation.fair_value_gap import (
+    is_fair_value_falling_gap,
+    is_fair_value_rising_gap,
+)
+from .candlesticks.continuation.four_bars_made_n import is_falling_n, is_rising_n
+from .candlesticks.continuation.gap import is_bearish_gap, is_bullish_gap
+from .candlesticks.continuation.neck import is_bearish_neck, is_bullish_neck
+from .candlesticks.continuation.separating_line import (
+    is_bearish_separating_line,
+    is_bullish_separating_line,
+)
+from .candlesticks.continuation.three_methods import is_falling_three, is_rising_three
+from .candlesticks.reversal.bearish_double_candlesticks import BearishDoubleCandlestick
+from .candlesticks.reversal.bearish_triple_candlesticks import BearishTripleCandlestick
+
 #
 from .candlesticks.reversal.bullish_double_candlesticks import BullishDoubleCandlestick
-from .candlesticks.reversal.bearish_double_candlesticks import BearishDoubleCandlestick
 from .candlesticks.reversal.bullish_triple_candlesticks import BullishTripleCandlestick
-from .candlesticks.reversal.bearish_triple_candlesticks import BearishTripleCandlestick
-from .candlesticks import *
-from .candlesticks import WHITE_CS, BLACK_CS, DOJI_CS, MARUBOZU_CS, HANGING_MAN_CS
-from .candlesticks import SHOOTING_STAR_CS, SPINNING_TOP_CS, HAMMER_CS, INVERTED_HAMMER_CS
 
 
 class CandlestickPatterns:
-    def __init__(self, data):
+    def __init__(self, data: pd.DataFrame):
         self.working_data = data.copy()
-        self.added_patterns = []
+        self.added_patterns: List[str] = []
 
-    def _add(self, pattern_name):
+    def _add(self, pattern_name: str) -> None:
         self.__validate(pattern_name)
         self.added_patterns.append(pattern_name)
 
-    def pattern_modeling(self):
+    def pattern_modeling(self) -> pd.DataFrame:
         prepared_data = self.prepare_data(self.working_data)
         if not len(self.added_patterns):
             prepared_data['model'] = ''
@@ -49,15 +85,12 @@ class CandlestickPatterns:
             else:
                 model = self.get_full_candlestick_pattern(working_htd)
             #
-            if len(model):
-                model = ', '.join(model)
-            else:
-                model = ''
+            model = ', '.join(model) if len(model) else ''
             models.append(model)
         prepared_data['model'] = models
         return prepared_data
 
-    def prepare_data(self, htd):
+    def prepare_data(self, htd: pd.DataFrame) -> pd.DataFrame:
         htd['min_OC'] = htd.apply(
             lambda r: min(r['Open'], r['Close']), axis=1)
         htd['max_OC'] = htd.apply(
@@ -75,7 +108,7 @@ class CandlestickPatterns:
         htd['candlestick'] = htd.apply(lambda r: self.get_candlestick(r), axis=1)
         return htd
 
-    def get_reversal_cs_pattern(self, child_df):
+    def get_reversal_cs_pattern(self, child_df: pd.DataFrame) -> List[str]:
         pattern = []
         #
         selected_bullish_patterns = list(filter(lambda p: 'rising' in p or 'morning' in p or 'bullish' in p
@@ -151,7 +184,7 @@ class CandlestickPatterns:
         #
         return pattern
 
-    def get_continuation_cs_pattern(self, child_df):
+    def get_continuation_cs_pattern(self, child_df: pd.DataFrame) -> List[str]:
         pattern = []
         if BULLISH_GAP in self.added_patterns or BEARISH_GAP in self.added_patterns \
                 or GET_CONTINUE in self.added_patterns or GET_FULL in self.added_patterns:
@@ -197,7 +230,7 @@ class CandlestickPatterns:
         #
         return pattern
 
-    def get_full_candlestick_pattern(self, child_df):
+    def get_full_candlestick_pattern(self, child_df: pd.DataFrame) -> List[str]:
         pattern = []
         cont_patterns = self.get_continuation_cs_pattern(child_df)
         reversal_patterns = self.get_reversal_cs_pattern(child_df)
@@ -206,11 +239,11 @@ class CandlestickPatterns:
         return pattern
 
     @staticmethod
-    def get_supported_patterns():
+    def get_supported_patterns() -> List[str]:
         return ALLOWED_PATTERNS
 
     @staticmethod
-    def get_candlestick(r):
+    def get_candlestick(r: pd.Series) -> str:
         if r['Low'] == r['High']:
             return ''
         if r['oc_dif'] == 0:
@@ -229,19 +262,15 @@ class CandlestickPatterns:
             return SPINNING_TOP_CS
         return ''
 
-    def __validate(self, pattern_name):
+    def __validate(self, pattern_name: str) -> None:
         if pattern_name not in ALLOWED_PATTERNS:
-            print(f"The pattern {pattern_name} is not recognized.")
-            exit()
+            raise ValueError(f"The pattern {pattern_name} is not recognized.")
         if pattern_name in self.added_patterns:
-            print(f"The pattern {pattern_name} is already added.")
-            exit()
+            raise ValueError(f"The pattern {pattern_name} is already added.")
         if (pattern_name == GET_FULL and len(self.added_patterns)) or GET_FULL in self.added_patterns:
-            print(f"You can not add {GET_FULL} if you added some others. Just use only {GET_FULL}.")
-            exit()
-        if (pattern_name == GET_REVERSAL or pattern_name == GET_CONTINUE or pattern_name == GET_FULL) and \
+            raise ValueError(f"You can not add {GET_FULL} if you added some others. Just use only {GET_FULL}.")
+        if (pattern_name in (GET_REVERSAL, GET_CONTINUE, GET_FULL)) and \
                 (GET_REVERSAL in self.added_patterns or GET_CONTINUE in self.added_patterns or
                  GET_FULL in self.added_patterns):
-            print(
+            raise ValueError(
                 f"You can not add {GET_REVERSAL} & {GET_CONTINUE} & {GET_FULL} together. Just use {GET_FULL} instead.")
-            exit()

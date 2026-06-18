@@ -1,4 +1,4 @@
-from stock_price_patterns.candlesticks import *
+from .. import *
 
 
 class BullishTripleCandlestick:
@@ -62,7 +62,7 @@ class BullishTripleCandlestick:
         return True
 
     def __validate_morning_doji_star_pattern(self):
-        if not self._prev_bar['color'] == DOJI_CS:
+        if self._prev_bar['color'] != DOJI_CS:
             return False
         self.morning_doji_star = True
         return True
