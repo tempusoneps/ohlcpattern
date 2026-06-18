@@ -5,7 +5,27 @@ from ohlcpattern.candlesticks import GET_FULL
 from pathlib import Path
 from typing import Optional
 
-app = typer.Typer(help="OHLC Pattern Extraction CLI")
+app = typer.Typer(help="OHLC Pattern Extraction CLI", add_completion=False)
+
+
+@app.callback(invoke_without_command=True)
+def main(
+    ctx: typer.Context,
+    version: bool = typer.Option(
+        False,
+        "--version",
+        help="Show current version and exit.",
+        is_eager=True,
+    ),
+):
+    if version:
+        typer.echo("ohlcpattern version 0.1.0")
+        raise typer.Exit()
+
+    if ctx.invoked_subcommand is None:
+        typer.echo(ctx.get_help())
+        raise typer.Exit()
+
 
 @app.command()
 def extract(
@@ -41,13 +61,6 @@ def extract(
     except Exception as e:
         typer.echo(f"An error occurred: {e}", err=True)
         raise typer.Exit(code=1)
-
-@app.command()
-def version():
-    """
-    Show current version.
-    """
-    typer.echo("ohlcpattern version 0.1.0")
 
 if __name__ == "__main__":
     app()

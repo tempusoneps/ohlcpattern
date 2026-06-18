@@ -20,18 +20,32 @@
 
 ## 📦 Installation
 
-To install the library, simply use `pip`:
+To install the library with `pip`:
 
 ```bash
 pip install ohlcpattern
 ```
 
-For development, install with optional dependencies:
+To install the library with `uv`:
+
+```bash
+uv sync
+```
+
+For development, install with optional dependencies using `pip`:
 
 ```bash
 git clone https://github.com/yourusername/ohlcpattern.git
 cd ohlcpattern
 pip install -e ".[dev]"
+```
+
+Or use `uv`:
+
+```bash
+git clone https://github.com/yourusername/ohlcpattern.git
+cd ohlcpattern
+uv sync --extra dev
 ```
 
 ---
@@ -63,6 +77,30 @@ print(detected[['Open', 'High', 'Low', 'Close', 'model']])
 
 ---
 
+## 🖥️ CLI
+
+The package exposes a command-line interface named `ohlcpattern`.
+
+```bash
+ohlcpattern --help
+ohlcpattern --version
+ohlcpattern extract market_data.csv --output patterns.csv
+ohlcpattern extract --help
+```
+
+If you prefer running it through `uv`:
+
+```bash
+uv run ohlcpattern --help
+uv run ohlcpattern --version
+uv run ohlcpattern extract market_data.csv --output patterns.csv
+uv run ohlcpattern extract --help
+```
+
+The `extract` command expects a CSV file with `Open`, `High`, `Low`, and `Close` columns. If `--output` is omitted, it prints a preview of detected patterns to the terminal.
+
+---
+
 ## 🕯️ Supported Patterns
 
 We support a wide variety of patterns across multiple categories:
@@ -91,13 +129,13 @@ We use `ruff` and `pytest` for quality insurance.
 
 ### Running Tests
 ```bash
-pytest src tests
+uv run pytest src tests
 ```
 
 ### Linting & Formatting
 ```bash
-ruff check src
-ruff format src
+uv run ruff check src
+uv run ruff format src
 ```
 
 ---
